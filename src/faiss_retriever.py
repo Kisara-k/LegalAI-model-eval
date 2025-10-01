@@ -131,7 +131,6 @@ class FAISSRetriever:
         self, 
         documents: List[str],
         batch_size: int = EMBEDDING_BATCH_SIZE,
-        use_gpu: bool = False
     ):
         """
         Build FAISS index from documents.
@@ -139,33 +138,25 @@ class FAISSRetriever:
         Args:
             documents: List of document strings.
             batch_size: Batch size for encoding.
-            use_gpu: Whether to use GPU for FAISS index.
+        
+        Note:
+            FAISS index operations use CPU (faiss-cpu package).
+            GPU is still used for encoding embeddings via PyTorch/Transformers.
         """
         self.documents = documents
         
-        # Encode documents
+        # Encode documents (uses GPU via PyTorch if available)
         embeddings = self.encode_documents(documents, batch_size)
         
-        # Build FAISS index
+        # Build FAISS index (CPU-only with faiss-cpu)
         print("Building FAISS index...")
         dimension = embeddings.shape[1]
         
         # Use IndexFlatIP for inner product (cosine similarity with normalized vectors)
         index = faiss.IndexFlatIP(dimension)
         
-        # Move to GPU if requested
-        if use_gpu and torch.cuda.is_available():
-            print("Moving index to GPU...")
-            res = faiss.StandardGpuResources()
-            index = faiss.index_cpu_to_gpu(res, 0, index)
-        
         # Add embeddings to index
         index.add(embeddings.astype(np.float32))
-        
-        # If index was on GPU, move back to CPU for saving
-        if use_gpu and torch.cuda.is_available():
-            print("Moving index back to CPU for storage...")
-            index = faiss.index_gpu_to_cpu(index)
         
         self.index = index
         print(f"FAISS index built with {index.ntotal} vectors")
@@ -299,7 +290,6 @@ class FAISSRetriever:
 def build_all_indices(
     documents_content: List[str],
     documents_metadata: List[str],
-    use_gpu: bool = True,
     batch_size: int = EMBEDDING_BATCH_SIZE,
 ):
     """
@@ -308,8 +298,11 @@ def build_all_indices(
     Args:
         documents_content: List of content documents.
         documents_metadata: List of metadata documents.
-        use_gpu: Whether to use GPU for building indices.
         batch_size: Batch size for encoding.
+    
+    Note:
+        GPU is used for encoding embeddings (via PyTorch/Transformers).
+        FAISS index operations use CPU (faiss-cpu package).
     """
     print("\n" + "="*80)
     print("BUILDING FAISS INDICES FOR ALL MODELS")
@@ -323,7 +316,7 @@ def build_all_indices(
         # Build content index
         print("\n--- Building Content Index ---")
         content_retriever = FAISSRetriever(model_key)
-        content_retriever.build_index(documents_content, batch_size, use_gpu)
+        content_retriever.build_index(documents_content, batch_size)
         
         content_path = INDICES_DIR / f"content_{model_key}"
         content_retriever.save_index(content_path)
@@ -331,7 +324,7 @@ def build_all_indices(
         # Build metadata index
         print("\n--- Building Metadata Index ---")
         metadata_retriever = FAISSRetriever(model_key)
-        metadata_retriever.build_index(documents_metadata, batch_size, use_gpu)
+        metadata_retriever.build_index(documents_metadata, batch_size)
         
         metadata_path = INDICES_DIR / f"metadata_{model_key}"
         metadata_retriever.save_index(metadata_path)

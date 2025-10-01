@@ -13,9 +13,8 @@ FlagEmbedding>=1.2.0
 # Retrieval libraries
 rank-bm25>=0.2.2
 faiss-cpu>=1.7.4
-# Note: faiss-gpu is not available on PyPI (discontinued since v1.7.3)
-# For GPU support, use conda: conda install -c pytorch faiss-gpu
-# However, faiss-cpu works fine - GPU is used for embeddings (the slow part)
+# Note: Only faiss-cpu is available via pip
+# GPU is still used for encoding embeddings (via PyTorch)
 
 # Utilities
 scikit-learn>=1.3.0

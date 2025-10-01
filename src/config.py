@@ -61,12 +61,12 @@ FAISS_NLIST = 100  # Number of clusters for IVF index
 FAISS_NPROBE = 10  # Number of clusters to search
 
 # Batch sizes
-# Increased for better GPU utilization (adjust based on your VRAM)
+# Larger batches improve throughput when encoding with GPU
 # For 16GB VRAM: 128-256 works well
 # For 24GB+ VRAM: 256-512 works well
 # For 8-12GB VRAM: Use 64-128
-EMBEDDING_BATCH_SIZE = 128  # Increased from 32 to utilize more GPU RAM
-RERANKING_BATCH_SIZE = 64   # Increased from 32
+EMBEDDING_BATCH_SIZE = 128  # Optimized for T4/V100 GPUs
+RERANKING_BATCH_SIZE = 64   # For cross-encoder reranking
 
 # Device configuration
 # Will be set at runtime based on availability
