@@ -45,9 +45,10 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 # Install all required packages
 pip install -r requirements.txt
 
-# For GPU support (if you have CUDA-capable GPU), also install:
-pip uninstall faiss-cpu
-pip install faiss-gpu
+# Note: requirements.txt includes faiss-cpu
+# For GPU FAISS support (optional, minimal performance gain):
+# Use conda instead: conda install -c pytorch -c nvidia faiss-gpu
+# See FAISS_INSTALLATION_GUIDE.md for details
 ```
 
 ### Step 4: Verify Installation

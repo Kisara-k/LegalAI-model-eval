@@ -86,8 +86,12 @@ This project evaluates different approaches to building a Retrieval-Augmented Ge
 ## Documentation
 
 - **[README.md](README.md)** - This file, project overview
+- **[COLAB_GUIDE.md](COLAB_GUIDE.md)** - Step-by-step guide for Google Colab ☁️
+- **[FAISS_INSTALLATION_GUIDE.md](FAISS_INSTALLATION_GUIDE.md)** - FAISS installation explained (CPU vs GPU) 📦
 - **[WORKFLOW.md](WORKFLOW.md)** - Complete workflow explanation
 - **[COMPUTE_REQUIREMENTS.md](COMPUTE_REQUIREMENTS.md)** - GPU/CPU requirements for index building ⚡
+- **[GPU_OPTIMIZATION.md](GPU_OPTIMIZATION.md)** - Batch size tuning and GPU utilization guide 🚀
+- **[BGE_M3_INTEGRATION.md](BGE_M3_INTEGRATION.md)** - BGE-M3 model integration details
 - **[USAGE_GUIDE.md](USAGE_GUIDE.md)** - Detailed usage instructions
 - **[QUICK_REFERENCE.md](QUICK_REFERENCE.md)** - Quick reference card
 - **[PROJECT_SUMMARY.md](PROJECT_SUMMARY.md)** - Comprehensive project summary
@@ -128,6 +132,8 @@ LegalAI-model-eval/
 
 ## Quick Start
 
+### Option A: Local Setup (with GPU)
+
 1. **Install dependencies:**
 
    ```powershell
@@ -143,10 +149,46 @@ LegalAI-model-eval/
    ```
 
 3. **Run notebooks in order:**
+
    - `01_bm25_retrieval.ipynb` - BM25 baseline (~15 min, CPU)
-   - `02_faiss_index_builder.ipynb` - Build indices (~30-60 min, **GPU required** - see [COMPUTE_REQUIREMENTS.md](COMPUTE_REQUIREMENTS.md))
+   - `02_faiss_index_builder.ipynb` - Build indices (~24-56 min, **GPU required** - see [COMPUTE_REQUIREMENTS.md](COMPUTE_REQUIREMENTS.md))
    - `03_faiss_retrieval.ipynb` - FAISS evaluation (~20 min, CPU)
    - `04_reranker.ipynb` - Reranking analysis (~15 min, CPU)
+
+4. **Optimize GPU performance (optional):**
+   - Default batch size: 128 (uses ~70-80% GPU)
+   - Increase for faster processing (see [GPU_OPTIMIZATION.md](GPU_OPTIMIZATION.md))
+   - Monitor with: `nvidia-smi -l 1`
+
+### Option B: Google Colab (Free GPU) ☁️
+
+**Best for:** Building FAISS indices without a local GPU
+
+1. **Open notebook 02 in Colab:**
+
+   - Upload `02_faiss_index_builder.ipynb` to [Google Colab](https://colab.research.google.com/)
+   - Enable GPU: Runtime → Change runtime type → GPU (T4)
+
+2. **Upload dataset:**
+
+   - Upload `acts_with_metadata.tsv` to Colab files
+
+3. **Run all cells:**
+
+   - Takes ~50-60 minutes on free T4 GPU
+   - Builds all 8 FAISS indices
+
+4. **Download indices:**
+
+   - Auto-downloads `indices.zip` (~22 GB)
+   - Extract to local `indices/` folder
+
+5. **Run remaining notebooks locally on CPU:**
+   - `01_bm25_retrieval.ipynb`
+   - `03_faiss_retrieval.ipynb` (uses pre-built indices)
+   - `04_reranker.ipynb`
+
+**📖 See [COLAB_GUIDE.md](COLAB_GUIDE.md) for detailed step-by-step instructions**
 
 **See [WORKFLOW.md](WORKFLOW.md) for detailed workflow explanation.**
 

@@ -61,8 +61,12 @@ FAISS_NLIST = 100  # Number of clusters for IVF index
 FAISS_NPROBE = 10  # Number of clusters to search
 
 # Batch sizes
-EMBEDDING_BATCH_SIZE = 32
-RERANKING_BATCH_SIZE = 32
+# Increased for better GPU utilization (adjust based on your VRAM)
+# For 16GB VRAM: 128-256 works well
+# For 24GB+ VRAM: 256-512 works well
+# For 8-12GB VRAM: Use 64-128
+EMBEDDING_BATCH_SIZE = 128  # Increased from 32 to utilize more GPU RAM
+RERANKING_BATCH_SIZE = 64   # Increased from 32
 
 # Device configuration
 # Will be set at runtime based on availability
