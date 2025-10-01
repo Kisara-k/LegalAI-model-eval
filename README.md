@@ -2,10 +2,88 @@
 
 This project evaluates different approaches to building a Retrieval-Augmented Generation (RAG) pipeline for legal documents using the Sri Lankan legal acts dataset.
 
+## 📊 What's Being Tested
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                        PRE-PROCESSED DATASET                                 │
+│                     data/acts_with_metadata.tsv                              │
+│                     (573K+ Legal Act Chunks)                                 │
+└────────────────────────────┬────────────────────────────────────────────────┘
+                             │
+                ┌────────────┴────────────┐
+                │                         │
+        ┌───────▼────────┐        ┌──────▼──────────┐
+        │  CONTENT FIELD │        │ METADATA FIELD  │
+        │   (Full Text)  │        │  (4 fields →1)  │
+        └───────┬────────┘        └──────┬──────────┘
+                │                         │
+                │    ┌────────────────────┤
+                │    │                    │
+                │    │   10 Legal Queries │
+                │    │   (Constitutional, │
+                │    │    Tax, Electoral, │
+                │    │    etc.)           │
+                │    │                    │
+                └────┼────────────────────┘
+                     │
+         ┌───────────┴────────────┐
+         │                        │
+    ┌────▼─────┐          ┌──────▼──────────────────────────┐
+    │   BM25   │          │          FAISS (Dense)          │
+    │ (Sparse) │          │                                  │
+    └────┬─────┘          │  ┌────────────────────────────┐ │
+         │                │  │  Legal-BERT                │ │
+         │                │  │  (Domain-Specific)         │ │
+         │                │  └────────────────────────────┘ │
+         │                │  ┌────────────────────────────┐ │
+         │                │  │  GTE-Large                 │ │
+         │                │  │  (SOTA General)            │ │
+         │                │  └────────────────────────────┘ │
+         │                │  ┌────────────────────────────┐ │
+         │                │  │  BGE-Large                 │ │
+         │                │  │  (Top MTEB Retrieval)      │ │
+         │                │  └────────────────────────────┘ │
+         │                └──────┬──────────────────────────┘
+         │                       │
+         └───────────┬───────────┘
+                     │
+                     │  Initial Retrieval Results
+                     │  (2 + 6 = 8 configurations)
+                     │
+                ┌────▼─────────────────────┐
+                │   CROSS-ENCODER          │
+                │   RERANKER               │
+                │   (ms-marco-MiniLM)      │
+                └────┬─────────────────────┘
+                     │
+                     │  Reranked Results
+                     │
+                ┌────▼─────────────────────┐
+                │   EVALUATION             │
+                │   • Retrieval Time       │
+                │   • Overlap Analysis     │
+                │   • Diversity Metrics    │
+                │   • Before/After Rerank  │
+                └──────────────────────────┘
+```
+
+### Evaluation Matrix
+
+| Retrieval Method | Content Field                | Metadata Field | Models/Variants | Total Configs |
+| ---------------- | ---------------------------- | -------------- | --------------- | ------------- |
+| **BM25**         | ✓                            | ✓              | 1               | **2**         |
+| **FAISS**        | ✓                            | ✓              | 3               | **6**         |
+| **Reranker**     | Applied to all above results | 1              | **8+**          |
+| **Total Tests**  |                              |                |                 | **12+**       |
+
+**Queries × Configs = 10 queries × 12+ configurations = 120+ retrieval operations**
+
 ## Documentation
 
 - **[README.md](README.md)** - This file, project overview
 - **[WORKFLOW.md](WORKFLOW.md)** - Complete workflow explanation
+- **[COMPUTE_REQUIREMENTS.md](COMPUTE_REQUIREMENTS.md)** - GPU/CPU requirements for index building ⚡
 - **[USAGE_GUIDE.md](USAGE_GUIDE.md)** - Detailed usage instructions
 - **[QUICK_REFERENCE.md](QUICK_REFERENCE.md)** - Quick reference card
 - **[PROJECT_SUMMARY.md](PROJECT_SUMMARY.md)** - Comprehensive project summary
@@ -59,10 +137,10 @@ LegalAI-model-eval/
    ```
 
 3. **Run notebooks in order:**
-   - `01_bm25_retrieval.ipynb` - BM25 baseline (~15 min)
-   - `02_faiss_index_builder.ipynb` - Build indices on GPU (~30-60 min)
-   - `03_faiss_retrieval.ipynb` - FAISS evaluation on CPU (~20 min)
-   - `04_reranker.ipynb` - Reranking analysis (~15 min)
+   - `01_bm25_retrieval.ipynb` - BM25 baseline (~15 min, CPU)
+   - `02_faiss_index_builder.ipynb` - Build indices (~30-60 min, **GPU required** - see [COMPUTE_REQUIREMENTS.md](COMPUTE_REQUIREMENTS.md))
+   - `03_faiss_retrieval.ipynb` - FAISS evaluation (~20 min, CPU)
+   - `04_reranker.ipynb` - Reranking analysis (~15 min, CPU)
 
 **See [WORKFLOW.md](WORKFLOW.md) for detailed workflow explanation.**
 
@@ -90,12 +168,20 @@ Dense retrieval using FAISS (Facebook AI Similarity Search) with three embedding
 
 1. **Legal-BERT** (`nlpaueb/legal-bert-base-uncased`)
    - Domain-specific model trained on legal corpora
+   - ~440 MB, 768-dim embeddings
+   - VRAM: ~2-3 GB
 2. **GTE-Large** (`thenlper/gte-large`)
    - State-of-the-art general-purpose embedding model
+   - ~670 MB, 1024-dim embeddings
+   - VRAM: ~4-6 GB
    - Excellent performance on MTEB benchmarks
 3. **BGE-Large** (`BAAI/bge-large-en-v1.5`)
    - Top-performing model for retrieval tasks
+   - ~1.3 GB, 1024-dim embeddings
+   - VRAM: ~4-6 GB
    - Strong performance on legal and technical documents
+
+**GPU Requirements:** 12+ GB VRAM recommended (or use Google Colab free tier). See [COMPUTE_REQUIREMENTS.md](COMPUTE_REQUIREMENTS.md) for details.
 
 ### 3. Reranking
 
