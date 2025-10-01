@@ -44,12 +44,16 @@ This project evaluates different approaches to building a Retrieval-Augmented Ge
          │                │  │  BGE-Large                 │ │
          │                │  │  (Top MTEB Retrieval)      │ │
          │                │  └────────────────────────────┘ │
+         │                │  ┌────────────────────────────┐ │
+         │                │  │  BGE-M3 🆕                 │ │
+         │                │  │  (8K context, Multilingual)│ │
+         │                │  └────────────────────────────┘ │
          │                └──────┬──────────────────────────┘
          │                       │
          └───────────┬───────────┘
                      │
                      │  Initial Retrieval Results
-                     │  (2 + 6 = 8 configurations)
+                     │  (2 + 8 = 10 configurations)
                      │
                 ┌────▼─────────────────────┐
                 │   CROSS-ENCODER          │
@@ -73,11 +77,11 @@ This project evaluates different approaches to building a Retrieval-Augmented Ge
 | Retrieval Method | Content Field                | Metadata Field | Models/Variants | Total Configs |
 | ---------------- | ---------------------------- | -------------- | --------------- | ------------- |
 | **BM25**         | ✓                            | ✓              | 1               | **2**         |
-| **FAISS**        | ✓                            | ✓              | 3               | **6**         |
-| **Reranker**     | Applied to all above results | 1              | **8+**          |
-| **Total Tests**  |                              |                |                 | **12+**       |
+| **FAISS**        | ✓                            | ✓              | 4               | **8**         |
+| **Reranker**     | Applied to all above results |                | 1               | **10+**       |
+| **Total Tests**  |                              |                |                 | **16+**       |
 
-**Queries × Configs = 10 queries × 12+ configurations = 120+ retrieval operations**
+**Queries × Configs = 10 queries × 16+ configurations = 160+ retrieval operations**
 
 ## Documentation
 
@@ -112,9 +116,11 @@ LegalAI-model-eval/
 │   ├── content_legalbert/
 │   ├── content_gte_large/
 │   ├── content_bge_large/
+│   ├── content_bge_m3/
 │   ├── metadata_legalbert/
 │   ├── metadata_gte_large/
-│   └── metadata_bge_large/
+│   ├── metadata_bge_large/
+│   └── metadata_bge_m3/
 ├── results/                            # Evaluation results
 ├── requirements.txt                    # Python dependencies
 └── README.md                          # This file
@@ -164,7 +170,7 @@ Traditional sparse retrieval using BM25 algorithm implemented with `rank-bm25` l
 
 ### 2. FAISS Retrieval
 
-Dense retrieval using FAISS (Facebook AI Similarity Search) with three embedding models:
+Dense retrieval using FAISS (Facebook AI Similarity Search) with four state-of-the-art embedding models:
 
 1. **Legal-BERT** (`nlpaueb/legal-bert-base-uncased`)
    - Domain-specific model trained on legal corpora
@@ -176,12 +182,20 @@ Dense retrieval using FAISS (Facebook AI Similarity Search) with three embedding
    - VRAM: ~4-6 GB
    - Excellent performance on MTEB benchmarks
 3. **BGE-Large** (`BAAI/bge-large-en-v1.5`)
+
    - Top-performing model for retrieval tasks
    - ~1.3 GB, 1024-dim embeddings
    - VRAM: ~4-6 GB
    - Strong performance on legal and technical documents
 
-**GPU Requirements:** 12+ GB VRAM recommended (or use Google Colab free tier). See [COMPUTE_REQUIREMENTS.md](COMPUTE_REQUIREMENTS.md) for details.
+4. **BGE-M3** (`BAAI/bge-m3`) 🆕
+   - Multi-functionality model (dense + sparse + ColBERT)
+   - ~2.2 GB, 1024-dim embeddings, **8192 max tokens**
+   - VRAM: ~6-8 GB
+   - Multilingual support (100+ languages)
+   - Ideal for long legal documents
+
+**GPU Requirements:** 16+ GB VRAM recommended (or use Google Colab free tier). See [COMPUTE_REQUIREMENTS.md](COMPUTE_REQUIREMENTS.md) for details.
 
 ### 3. Reranking
 

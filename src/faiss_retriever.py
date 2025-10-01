@@ -19,6 +19,14 @@ from .config import (
     DEVICE,
 )
 
+# Import BGE-M3 model
+try:
+    from FlagEmbedding import BGEM3FlagModel
+    BGE_M3_AVAILABLE = True
+except ImportError:
+    BGE_M3_AVAILABLE = False
+    print("Warning: FlagEmbedding not available. BGE-M3 model will not work.")
+
 
 def get_device():
     """Get the appropriate device for computation."""
@@ -47,15 +55,26 @@ class FAISSRetriever:
         self.model_key = model_name
         self.model_config = EMBEDDING_MODELS[model_name]
         self.device = get_device()
+        self.library = self.model_config.get("library", "sentence-transformers")
         
         print(f"Loading model: {self.model_config['name']}")
+        print(f"Library: {self.library}")
         print(f"Device: {self.device}")
         
-        # Load embedding model
-        self.model = SentenceTransformer(
-            self.model_config["name"],
-            device=self.device
-        )
+        # Load embedding model based on library
+        if self.library == "flagembedding":
+            if not BGE_M3_AVAILABLE:
+                raise ImportError("FlagEmbedding library is required for BGE-M3. Install with: pip install FlagEmbedding")
+            self.model = BGEM3FlagModel(
+                self.model_config["name"],
+                use_fp16=True  # Use FP16 for faster inference
+            )
+        else:
+            # Default to sentence-transformers
+            self.model = SentenceTransformer(
+                self.model_config["name"],
+                device=self.device
+            )
         
         self.index = None
         self.documents = documents
@@ -82,13 +101,28 @@ class FAISSRetriever:
         """
         print(f"Encoding {len(documents)} documents...")
         
-        embeddings = self.model.encode(
-            documents,
-            batch_size=batch_size,
-            show_progress_bar=show_progress,
-            convert_to_numpy=True,
-            normalize_embeddings=True,  # L2 normalization for cosine similarity
-        )
+        if self.library == "flagembedding":
+            # BGE-M3 model encoding
+            max_length = self.model_config.get("max_length", 8192)
+            embeddings = self.model.encode(
+                documents,
+                batch_size=batch_size,
+                max_length=max_length,
+                return_dense=True,
+                return_sparse=False,
+                return_colbert_vecs=False
+            )['dense_vecs']
+            # Normalize embeddings for cosine similarity
+            embeddings = embeddings / np.linalg.norm(embeddings, axis=1, keepdims=True)
+        else:
+            # SentenceTransformer encoding
+            embeddings = self.model.encode(
+                documents,
+                batch_size=batch_size,
+                show_progress_bar=show_progress,
+                convert_to_numpy=True,
+                normalize_embeddings=True,  # L2 normalization for cosine similarity
+            )
         
         print(f"Embeddings shape: {embeddings.shape}")
         return embeddings

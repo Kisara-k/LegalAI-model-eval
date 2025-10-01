@@ -26,16 +26,25 @@ EMBEDDING_MODELS = {
         "name": "nlpaueb/legal-bert-base-uncased",
         "description": "Domain-specific BERT model trained on legal corpora",
         "max_length": 512,
+        "library": "sentence-transformers",
     },
     "gte-large": {
         "name": "thenlper/gte-large",
         "description": "State-of-the-art general-purpose embedding model",
         "max_length": 512,
+        "library": "sentence-transformers",
     },
     "bge-large": {
         "name": "BAAI/bge-large-en-v1.5",
         "description": "Top-performing model for retrieval tasks",
         "max_length": 512,
+        "library": "sentence-transformers",
+    },
+    "bge-m3": {
+        "name": "BAAI/bge-m3",
+        "description": "BGE-M3: Multi-Functionality, Multi-Linguality model with 8192 token support",
+        "max_length": 8192,
+        "library": "flagembedding",
     },
 }
 

@@ -8,6 +8,7 @@ transformers>=4.35.0
 sentence-transformers>=2.2.2
 torch>=2.0.0
 tokenizers>=0.15.0
+FlagEmbedding>=1.2.0
 
 # Retrieval libraries
 rank-bm25>=0.2.2
