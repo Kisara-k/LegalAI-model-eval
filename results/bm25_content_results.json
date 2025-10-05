@@ -1,0 +1,310 @@
+{
+  "field": "content",
+  "method": "BM25",
+  "top_k": 10,
+  "num_queries": 10,
+  "num_documents": 7067,
+  "avg_retrieval_time": 0.0400521993637085,
+  "results": [
+    {
+      "query_id": 1,
+      "query": "What are the procedures for presidential elections when the office becomes vacant?",
+      "category": "Constitutional Law",
+      "retrieved_indices": [
+        0,
+        6689,
+        2308,
+        6579,
+        6594,
+        3947,
+        2305,
+        6688,
+        6668,
+        2304
+      ],
+      "scores": [
+        35.37695590955306,
+        33.445563582741535,
+        31.807093611090473,
+        31.157675029230752,
+        31.100568020230455,
+        30.950948865396313,
+        30.66338132830025,
+        30.45597873541974,
+        30.21289937829893,
+        30.04314402157192
+      ],
+      "retrieval_time": 0.03940916061401367
+    },
+    {
+      "query_id": 2,
+      "query": "What are the tax obligations and payment requirements for businesses with quarterly turnover?",
+      "category": "Tax Law",
+      "retrieved_indices": [
+        3094,
+        3093,
+        3132,
+        3133,
+        5775,
+        5749,
+        2262,
+        2975,
+        5776,
+        2228
+      ],
+      "scores": [
+        34.060866298900585,
+        33.78978099441227,
+        32.91905235393946,
+        32.08984143688807,
+        31.420860086346607,
+        31.0522694296017,
+        30.147189413659465,
+        30.044287243437495,
+        29.80875345622243,
+        29.442442055286303
+      ],
+      "retrieval_time": 0.04254007339477539
+    },
+    {
+      "query_id": 3,
+      "query": "What are the penalty provisions for bribery and undue influence in elections?",
+      "category": "Electoral Law",
+      "retrieved_indices": [
+        3,
+        5697,
+        123,
+        186,
+        82,
+        6694,
+        5822,
+        6500,
+        1614,
+        6693
+      ],
+      "scores": [
+        44.10766492135473,
+        38.855207774992174,
+        37.42115829085602,
+        34.59456349610308,
+        34.17027407799399,
+        32.93867024944082,
+        32.908835495606326,
+        32.74491376633971,
+        32.31108242611866,
+        32.17269865721033
+      ],
+      "retrieval_time": 0.03889203071594238
+    },
+    {
+      "query_id": 4,
+      "query": "What is the process for filing appeals to the Board of Review and Court of Appeal?",
+      "category": "Procedural Law",
+      "retrieved_indices": [
+        5787,
+        2978,
+        6731,
+        15,
+        1683,
+        3181,
+        3836,
+        4902,
+        6560,
+        6561
+      ],
+      "scores": [
+        57.87938916319268,
+        52.25840613218205,
+        52.0715729274591,
+        52.044219953394844,
+        51.35007336099662,
+        50.974545628672146,
+        50.617605728622564,
+        50.1255472057165,
+        49.915551438134614,
+        49.731886845151465
+      ],
+      "retrieval_time": 0.05041694641113281
+    },
+    {
+      "query_id": 5,
+      "query": "What are the voting procedures and ballot requirements for parliamentary elections?",
+      "category": "Electoral Law",
+      "retrieved_indices": [
+        117,
+        172,
+        111,
+        178,
+        77,
+        73,
+        1,
+        120,
+        80,
+        139
+      ],
+      "scores": [
+        32.872124414609964,
+        29.86316129178074,
+        28.96883934218609,
+        28.839411025157272,
+        28.818292055334503,
+        28.763203672975056,
+        28.67734416403872,
+        28.36611218501376,
+        27.456540269926307,
+        27.150738103494557
+      ],
+      "retrieval_time": 0.03451085090637207
+    },
+    {
+      "query_id": 6,
+      "query": "How are taxes assessed and collected, and what powers do assessors have?",
+      "category": "Tax Law",
+      "retrieved_indices": [
+        2617,
+        629,
+        2776,
+        2778,
+        3836,
+        5970,
+        3725,
+        3964,
+        2168,
+        3224
+      ],
+      "scores": [
+        28.819593536775905,
+        25.15749141580469,
+        24.478354050601027,
+        24.241248141549264,
+        23.301144294302652,
+        21.892946788820772,
+        21.695360546418858,
+        20.47662702470977,
+        20.21956509316312,
+        20.048729384220614
+      ],
+      "retrieval_time": 0.03774237632751465
+    },
+    {
+      "query_id": 7,
+      "query": "What are the establishment provisions and governance structure of the Defence Academy?",
+      "category": "Administrative Law",
+      "retrieved_indices": [
+        6335,
+        6909,
+        5662,
+        6561,
+        537,
+        2656,
+        1355,
+        6795,
+        6665,
+        4301
+      ],
+      "scores": [
+        38.03542040749007,
+        36.49013501545735,
+        36.19618565225812,
+        34.157594793664224,
+        33.44530404988102,
+        32.827299225552686,
+        32.463834135287215,
+        32.314738882800164,
+        32.13906105031628,
+        32.02559103729834
+      ],
+      "retrieval_time": 0.04429006576538086
+    },
+    {
+      "query_id": 8,
+      "query": "What are the import duty requirements and customs procedures for articles manufactured abroad?",
+      "category": "Customs Law",
+      "retrieved_indices": [
+        464,
+        5494,
+        12,
+        5306,
+        4762,
+        1658,
+        3098,
+        6628,
+        5202,
+        5971
+      ],
+      "scores": [
+        35.74266088874186,
+        32.62401363367732,
+        31.97408380145076,
+        31.842439138830116,
+        31.617652630940384,
+        31.331684848158503,
+        31.279156140169118,
+        30.843516819849647,
+        30.648460657541506,
+        30.536544534841667
+      ],
+      "retrieval_time": 0.041493892669677734
+    },
+    {
+      "query_id": 9,
+      "query": "What is the nomination process and requirements for presidential candidates?",
+      "category": "Constitutional Law",
+      "retrieved_indices": [
+        6579,
+        178,
+        117,
+        3836,
+        1812,
+        6689,
+        2625,
+        2924,
+        5970,
+        2308
+      ],
+      "scores": [
+        31.143731473538157,
+        30.619794231508813,
+        30.382825609377267,
+        29.02245669631367,
+        28.594661359031594,
+        28.497958028312144,
+        27.74269886901339,
+        27.606107887695988,
+        27.502255095801228,
+        27.38826303513958
+      ],
+      "retrieval_time": 0.031561851501464844
+    },
+    {
+      "query_id": 10,
+      "query": "What are the powers and functions of the Commissioner-General in tax administration?",
+      "category": "Tax Law",
+      "retrieved_indices": [
+        3094,
+        2962,
+        4769,
+        2978,
+        3229,
+        20,
+        1260,
+        5783,
+        3093,
+        1688
+      ],
+      "scores": [
+        38.389451394827006,
+        36.79926068363332,
+        36.230489530016015,
+        36.167194790994245,
+        35.661324945556245,
+        34.43422083966762,
+        34.2675419313623,
+        33.785914275019465,
+        33.709624944824164,
+        33.658108890190185
+      ],
+      "retrieval_time": 0.03966474533081055
+    }
+  ]
+}
