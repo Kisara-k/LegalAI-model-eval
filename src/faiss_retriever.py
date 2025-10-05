@@ -234,11 +234,26 @@ class FAISSRetriever:
         start_time = time.time()
         
         # Encode query
-        query_embedding = self.model.encode(
-            [query],
-            convert_to_numpy=True,
-            normalize_embeddings=True,
-        )
+        if self.library == "flagembedding":
+            # BGE-M3 model
+            max_length = self.model_config.get("max_length", 8192)
+            query_embedding = self.model.encode(
+                [query],
+                batch_size=1,
+                max_length=max_length,
+                return_dense=True,
+                return_sparse=False,
+                return_colbert_vecs=False
+            )['dense_vecs']
+            # Normalize for cosine similarity
+            query_embedding = query_embedding / np.linalg.norm(query_embedding, axis=1, keepdims=True)
+        else:
+            # SentenceTransformer model
+            query_embedding = self.model.encode(
+                [query],
+                convert_to_numpy=True,
+                normalize_embeddings=True,
+            )
         
         # Search
         scores, indices = self.index.search(

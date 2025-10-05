@@ -1,0 +1,9 @@
+Method,Field,Avg Retrieval Time (s),Num Queries,Num Documents,Model
+faiss_legal-bert_content,content,0.07983236312866211,10,N/A,legal-bert
+faiss_legal-bert_metadata,metadata,0.0737523078918457,10,N/A,legal-bert
+faiss_gte-large_content,content,0.2683269739151001,10,N/A,gte-large
+faiss_gte-large_metadata,metadata,0.29955320358276366,10,N/A,gte-large
+faiss_bge-large_content,content,0.47301671504974363,10,N/A,bge-large
+faiss_bge-large_metadata,metadata,0.3311231374740601,10,N/A,bge-large
+faiss_bge-m3_content,content,0.8045161247253418,10,N/A,bge-m3
+faiss_bge-m3_metadata,metadata,0.6931518077850342,10,N/A,bge-m3
