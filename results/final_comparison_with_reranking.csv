@@ -1,0 +1,5 @@
+Method,Field,Stage,Avg Time (s)
+BM25,Content,Initial,0.0400521993637085
+BM25 + Reranker,Content,Reranked,0.7160023927688599
+FAISS Legal-BERT,Content,Initial,0.07983236312866211
+FAISS Legal-BERT + Reranker,Content,Reranked,0.7524978637695313
